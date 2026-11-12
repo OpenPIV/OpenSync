@@ -1,0 +1,93 @@
+#pragma once
+
+#include <stdint.h>
+#include "hardware/pio.h"
+
+#include "structs/clock_config.h"
+#include "sequencer_common.h"
+
+
+uint sequencer_program_clock_add(
+    PIO pio_clock,
+    uint32_t clock_type
+);
+
+void sequencer_program_clock_remove(
+    PIO pio_clock, 
+    uint offset,
+    uint32_t clock_type
+);
+
+void sequencer_clocks_init(
+    struct clock_config* config_array,
+    PIO clock_pio
+);
+
+void sequencer_clock_configure(
+    struct clock_config* config,
+    uint32_t clock_pin,
+    uint32_t trigger_pin,
+    uint32_t trigger_reps
+);
+
+void sequencer_clock_insert_instructions_internal(
+    struct clock_config* config,
+    uint32_t instructions[CLOCK_INSTRUCTIONS_MAX]
+);
+
+void sequencer_clock_insert_instructions_triggered(
+    struct clock_config* config,
+    uint32_t instructions[CLOCK_TRIGGERS_MAX]
+);
+
+void sequencer_clock_insert_instructions_triggered_skip(
+    struct clock_config* config,
+    uint32_t skip
+);
+
+void sequencer_clock_insert_instructions_triggered_delay(
+    struct clock_config* config,
+    uint32_t delay
+);
+
+void sequencer_clock_config_reset(
+    struct clock_config* config
+);
+
+void sequencer_clock_dma_configure(
+    struct clock_config* config,
+    uint32_t clock_type
+);
+
+void sequencer_freerun_sm_helper_init(
+    PIO pio, uint sm, 
+    uint offset, 
+    uint pin_out,
+    uint clock_divider
+);
+
+void sequencer_triggered_sm_helper_init(
+    PIO pio, uint sm, 
+    uint offset, 
+    uint pin_out,
+    uint pin_trig, 
+    uint clock_divider,
+    uint32_t clock_type
+);
+
+void sequencer_clock_sm_config(
+    struct clock_config* config
+);
+
+void sequencer_clock_dma_free(
+    struct clock_config* config
+);
+
+void sequencer_clock_sm_free(
+    struct clock_config* config
+);
+
+void sequencer_clock_free(
+    struct clock_config* config
+);
+
